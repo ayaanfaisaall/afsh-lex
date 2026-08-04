@@ -1,3 +1,8 @@
+//
+// note: () or parenthesis are intentionally not 
+// allowed in my shell and its language and hence
+// (), don't even have a Token
+//
 #[derive(Debug, Clone, PartialEq)]
 pub enum Token {
     // general
@@ -5,12 +10,12 @@ pub enum Token {
     Str(Vec<StrIntr>),
     // punctuation
     SemiCln,
+    Colon,
     Comma,
     And,
     // logical operators
     Assign,
     AndAnd,
-    EqEq,
     OrOr,
     Bang,
     // shell operators
@@ -22,6 +27,21 @@ pub enum Token {
     LBrc,
     RSqr,
     LSqr,
+    // lang keywords
+    Let,
+    Print,
+    If,
+    Elif,
+    Else,
+    For,
+    While,
+    Break,
+    // equality operators
+    EqualTo, 
+    LessEqual, 
+    LessThan,
+    GreaterEqual,
+    GreaterThan,
     // end of file
     EOF,
 }
