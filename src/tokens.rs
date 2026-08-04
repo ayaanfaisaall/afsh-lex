@@ -8,7 +8,9 @@ pub enum Token {
     Comma,
     And,
     // logical operators
+    Assign,
     AndAnd,
+    EqEq,
     OrOr,
     Bang,
     // shell operators

@@ -109,6 +109,17 @@ impl <'a> Lexer <'a> {
                     tokens.push(Token::LSqr);
                     self.chars.next();
                 }
+                '=' => {
+                    self.chars.next();
+                    if let Some(&ch) = self.chars.peek() {
+                        if ch == '=' {
+                            tokens.push(Token::EqEq);
+                            self.chars.next();
+                        } else {
+                            tokens.push(Token::Assign);
+                        }
+                    }
+                }
                 '&' => {
                     self.chars.next();
                     if let Some(&ch) = self.chars.peek() {
