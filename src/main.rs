@@ -46,6 +46,7 @@ impl <'a> Lexer <'a> {
                 ' ' | '\n' | '\t' | '\r' => {
                     self.chars.next();
                 }
+                // :) = String::from("?")
                 // currently the literal has {} for the position of
                 // the variable in it, idk if i have to use a better
                 // approach for it or not :)
