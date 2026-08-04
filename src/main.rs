@@ -46,7 +46,11 @@ impl <'a> Lexer <'a> {
         let mut tokens = Vec::new();
         while let Some(&c) = self.chars.peek() {
             match c {
-                ' ' | '\n' | '\t' | '\r' => {
+                ' ' | '\t' | '\r' => {
+                    self.chars.next();
+                }
+                '\n' => {
+                    tokens.push(Token::NewLine);
                     self.chars.next();
                 }
                 //
@@ -155,6 +159,17 @@ impl <'a> Lexer <'a> {
                         }
                     }
                 }
+                '/' => {
+                    self.chars.next();
+                    if let Some(&ch) = self.chars.peek() {
+                        if ch == '/' {
+                            tokens.push(Token::Comment);
+                            self.chars.next();
+                        } else {
+                            tokens.push(Token::Slash);
+                        }
+                    }
+                }
                 _ => {
                     let mut word = String::new();
                     while let Some(&ch) = self.chars.peek() {
@@ -232,6 +247,10 @@ fn main() {
     let file = String::from("cat ~/Downloads/abc/dc.jpg | okay --l > jj --help>> hhff{k} | echo \"my name is {name}\" ");
     let file2 = String::from("let n1 = 43
                               print \"{n1}\"
+                              //
+                              // i know ky n1-eq43 kaam nhi kry ga kyu ky wo aik hi token bny ga 
+                              // ye drawback bash mai bhi hy 
+                              //
                               if n1 -eq 43 {
                                   while 1 {
                                       print \"the numbers are eq to: {n1}\"

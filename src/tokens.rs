@@ -8,6 +8,10 @@ pub enum Token {
     // general
     Word(String),
     Str(Vec<StrIntr>),
+    NewLine,
+    // slash, comments
+    Slash,
+    Comment,
     // punctuation
     SemiCln,
     Colon,
