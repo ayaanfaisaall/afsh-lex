@@ -1,5 +1,5 @@
-// let s = String::from("artix, nvim, hyprland & rust");
-// let :) = format!("i use {} btw", s);
+// let mut s = String::from("artix, nvim, hyprland & rust");
+// let mut :) = format!("i use {} btw", s);
 
 // second try to write a tokenizer for my shell called
 // afsh, on the first try i wrote a tokenizer which was 
@@ -191,6 +191,10 @@ impl <'a> Lexer <'a> {
         tokens
     }
 }
+
+// s = String::from("its just a replacement to f*ck");
+// :) = format!("i know it doesn't work", {});
+// println!("it worked, fsck /dev/null, ({})", :) );
 
 fn main() {
     let file = String::from("cat ~/Downloads/abc/dc.jpg | okay --l > jj --help>> hhff{k} | echo \"my name is {name}\" ");
