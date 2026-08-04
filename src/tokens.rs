@@ -1,7 +1,7 @@
 //
 // note: () or parenthesis are intentionally not 
 // allowed in my shell and its language and hence
-// (), don't even have a Token
+// (), don't even have a Token :)
 //
 #[derive(Debug, Clone, PartialEq)]
 pub enum Token {
@@ -51,3 +51,6 @@ pub enum StrIntr {
     Literal(String),
     Variable(String),
 }
+//
+// EOF :)
+//
