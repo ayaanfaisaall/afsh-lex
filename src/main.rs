@@ -5,9 +5,11 @@
 // afsh, on the first try i wrote a tokenizer which was 
 // a language first tokenizer, this time it is a shell 
 // first tokenizer, its phiosophy is:
+
 //      "everything is a word with an exception 
-//       to strings, punctuation, the logical &
-//       shell operators and brackets"
+//       to strings, punctuation, logical and 
+//       the shell operators and the brackets"
+
 //  written by:
 // -ayaanfaisaall :) 
 
@@ -31,14 +33,12 @@ impl <'a> Lexer <'a> {
             chars: input.chars().peekable(), 
         }
     }
-
     // tokenizing is the most dumbest (but fastest), step
     // in a shell or language pipeline, it doesn't know if 
     // a word is an external binary, an argument, a shell
     // builtin, or a shell keyword, it just knows if it is 
     // a word, a string, some punctuation, brackets or an 
     // operator :)
-
     fn tokenize (&mut self) -> Vec<Token> {
         let mut tokens = Vec::new();
         while let Some(&c) = self.chars.peek() {
@@ -183,12 +183,22 @@ impl <'a> Lexer <'a> {
 
 fn main() {
     let file = String::from("cat ~/Downloads/abc/dc.jpg | okay --l > jj --help>> hhff{k} | echo \"my name is {name}\" ");
-    let file2 = String::from("theme 4
+    let file2 = String::from("let n1 = 43
+                              print \"{n1}\"
+                              if n1 == 43 {
+                                  print \"the numbers are eq to: {n1}\"
+                              } else {
+                                  print \"the numbers are not eq\"
+                              }
+                              theme 4
                               runitctl --help
                               runitctl enable sshd
                               theme 3 && waybar; hyprpaper& ");
-    let mut lexer = Lexer::new(&file2);
-    let tokens = lexer.tokenize();
+    let mut lexer = Lexer::new(&file);
+    let mut tokens = lexer.tokenize();
+    println!("{:?}\n", tokens);
+    lexer = Lexer::new(&file2);
+    tokens = lexer.tokenize();
     println!("{:?}", tokens);
 }
 
