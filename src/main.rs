@@ -11,42 +11,15 @@
 //  written by:
 // -ayaanfaisaall :) 
 
+mod tokens;
 use std:: {
     iter::Peekable,
     str::Chars,
 };
-
-#[derive(Debug, Clone, PartialEq)]
-enum Token {
-    // general
-    Word(String),
-    Str(Vec<StrIntr>),
-    // punctuation
-    SemiCln,
-    Comma,
-    And,
-    // logical operators
-    AndAnd,
-    OrOr,
-    Bang,
-    // shell operators
-    Pipe,
-    Redirect,
-    Append,
-    // brackets
-    RBrc,
-    LBrc,
-    RSqr,
-    LSqr,
-    // end of file
-    EOF,
-}
-
-#[derive(Debug, Clone, PartialEq)]
-enum StrIntr {
-    Literal(String),
-    Variable(String),
-}
+use tokens::{
+    Token,
+    StrIntr,
+};
 
 struct Lexer <'a> {
     chars: Peekable<Chars <'a>>,
