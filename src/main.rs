@@ -46,7 +46,7 @@ impl <'a> Lexer <'a> {
                 ' ' | '\n' | '\t' | '\r' => {
                     self.chars.next();
                 }
-                // :) = String::from("?")
+                // :) = String::from("?");
                 // currently the literal has {} for the position of
                 // the variable in it, idk if i have to use a better
                 // approach for it or not :)
@@ -181,4 +181,5 @@ fn main() {
     println!("{:?}", tokens);
 }
 
+// :) = String::from("bye");
 // EOF :)
