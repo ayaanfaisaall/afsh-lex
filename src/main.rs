@@ -165,6 +165,13 @@ impl <'a> Lexer <'a> {
                         if ch == '/' {
                             tokens.push(Token::Comment);
                             self.chars.next();
+                            while let Some(&ch) = self.chars.peek() {
+                                if ch == '\n' {
+                                    break;
+                                } else {
+                                    self.chars.next();
+                                }
+                            }
                         } else {
                             tokens.push(Token::Slash);
                         }
@@ -177,7 +184,7 @@ impl <'a> Lexer <'a> {
 
                               ' ' | '\n' | '\t' | '\r' | '"' | '='
                             | ';' | ','  | '&'  | '|'  | '!' | ':'
-                            | '>' | '{'  | '}'  | '['  | ']' => { 
+                            | '>' | '{'  | '}'  | '['  | ']' | '/' => { 
                                 break;
                             }
 
@@ -257,7 +264,7 @@ fn main() {
                                       break
                                   }
                               } elif n1 -le 23 {
-                                  print \"wow\"
+                                  print \"wow\" // yhan bhi comment add kr sakte hain
                               } else {
                                   for i in 0; 10 {
                                       print \"the numbers are not eq\"
