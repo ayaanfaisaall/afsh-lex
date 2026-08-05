@@ -46,11 +46,7 @@ impl <'a> Lexer <'a> {
         let mut tokens = Vec::new();
         while let Some(&c) = self.chars.peek() {
             match c {
-                ' ' | '\t' | '\r' => {
-                    self.chars.next();
-                }
-                '\n' => {
-                    tokens.push(Token::NewLine);
+                ' ' | '\t' | '\r' | '\n' => {
                     self.chars.next();
                 }
                 //
