@@ -46,7 +46,11 @@ impl <'a> Lexer <'a> {
         let mut tokens = Vec::new();
         while let Some(&c) = self.chars.peek() {
             match c {
-                ' ' | '\t' | '\r' | '\n' => {
+                ' ' | '\t' | '\r' => {
+                    self.chars.next();
+                }
+                '\n' => {
+                    tokens.push(Token::NewLine);
                     self.chars.next();
                 }
                 //
@@ -128,10 +132,6 @@ impl <'a> Lexer <'a> {
                     tokens.push(Token::RSqr);
                     self.chars.next();
                 }
-                '=' => {
-                    tokens.push(Token::Assign);
-                    self.chars.next();
-                }
                 ':' => {
                     tokens.push(Token::Colon);
                     self.chars.next();
@@ -148,6 +148,17 @@ impl <'a> Lexer <'a> {
                             self.chars.next();
                         } else {
                             tokens.push(Token::And);
+                        }
+                    }
+                }
+                '=' => {
+                    self.chars.next();
+                    if let Some(&ch) = self.chars.peek() {
+                        if ch == '=' {
+                            tokens.push(Token::EqEq);
+                            self.chars.next();
+                        } else {
+                            tokens.push(Token::Assign);
                         }
                     }
                 }
@@ -173,23 +184,84 @@ impl <'a> Lexer <'a> {
                         }
                     }
                 }
-                '/' => {
+                '#' => {
                     self.chars.next();
-                    if let Some(&ch) = self.chars.peek() {
-                        if ch == '/' {
-                            tokens.push(Token::Comment);
-                            self.chars.next();
-                            while let Some(&ch) = self.chars.peek() {
-                                if ch == '\n' {
-                                    break;
-                                } else {
-                                    self.chars.next();
-                                }
-                            }
+                    while let Some(&ch) = self.chars.peek() {
+                        if ch == '\n' {
+                            break;
                         } else {
-                            tokens.push(Token::Slash);
+                            self.chars.next();
                         }
                     }
+                }
+                '$' => {
+                    tokens.push(Token::Eval);
+                    self.chars.next();
+                    while let Some(&ch) = self.chars.peek() {
+                        match ch { 
+                            ' ' | '\n' | '\t' | '\r' => {
+                                self.chars.next();
+                            } 
+                            '{' => {
+                                tokens.push(Token::LBrc);
+                                self.chars.next();
+                            }
+                            '}' => {
+                                tokens.push(Token::RBrc);
+                                self.chars.next();
+                                break;
+                            }
+                            '(' => {
+                                tokens.push(Token::LPths);
+                                self.chars.next();
+                            }
+                            ')' => {
+                                tokens.push(Token::RPths);
+                                self.chars.next();
+                            }
+                            '+' => {
+                                tokens.push(Token::Plus);
+                                self.chars.next();
+                            }
+                            '-' => {
+                                tokens.push(Token::Minus);
+                                self.chars.next();
+                            }
+                            '*' => {
+                                tokens.push(Token::Multiply);
+                                self.chars.next();
+                            }
+                            '/' => {
+                                tokens.push(Token::Divide);
+                                self.chars.next();
+                            }
+                            '%' => {
+                                tokens.push(Token::Modulo);
+                                self.chars.next();
+                            }
+                            '^' => {
+                                tokens.push(Token::Power);
+                                self.chars.next();
+                            }
+                            _ => {
+                                let mut word = String::new();
+                                while let Some(&mw) = self.chars.peek() {
+                                    match mw {
+                                          ' ' | '\n' | '\t'| '\r'
+                                        | '+' | '-'  | '*' | '{' | '(' 
+                                        | '/' | '%'  | '^' | '}' | ')' => {
+                                            break;
+                                        }
+                                        _ => {
+                                            word.push(mw);
+                                            self.chars.next();
+                                        }                                     
+                                    }
+                                }
+                                tokens.push(Token::Word(word));
+                            }
+                        }
+                    } 
                 }
                 _ => {
                     let mut word = String::new();
@@ -197,11 +269,17 @@ impl <'a> Lexer <'a> {
                         match ch {
 
                               ' ' | '\n' | '\t' | '\r' | '"' | '='
-                            | ';' | ','  | '&'  | '|'  | '!' | ':'
-                            | '>' | '{'  | '}'  | '['  | ']' | '/' => { 
+                            | ';' | ','  | '&'  | '|'  | '!' | ':' | '#'
+                            | '>' | '{'  | '}'  | '['  | ']' | '$' | '<' => { 
                                 break;
                             }
-
+                            '\\' => {
+                                self.chars.next();
+                                if let Some(&ch) = self.chars.peek() {
+                                    word.push(ch);
+                                    self.chars.next();
+                                }
+                            }
                             _ => {
                                 word.push(ch);
                                 self.chars.next();
@@ -233,6 +311,12 @@ impl <'a> Lexer <'a> {
                         "break" => {
                             tokens.push(Token::Break);
                         }                        
+                        "true" => {
+                            tokens.push(Token::True);
+                        }
+                        "false" => {
+                            tokens.push(Token::False);
+                        }
                         "-eq" => {
                             tokens.push(Token::EqualTo);
                         }
@@ -266,28 +350,32 @@ impl <'a> Lexer <'a> {
 //
 fn main() {
     let file = String::from("cat ~/Downloads/abc/dc.jpg | okay --l > jj --help>> hhff{k} | echo \"my name is {name}\" ");
-    let file2 = String::from("let n1 = 43
-                              print \"{n1}\"
-                              //
-                              // i know ky n1-eq43 kaam nhi kry ga kyu ky wo aik hi token bny ga 
-                              // ye drawback bash mai bhi hy 
-                              //
+    let file2 = String::from(r#"let n1 = 43
+                              print "{n1}"
+                              #
+                              # i know ky n1-eq43 kaam nhi kry ga kyu ky wo aik hi token bny ga 
+                              # ye drawback bash mai bhi hy 
+                              #
                               if n1 -eq 43 {
                                   while 1 {
-                                      print \"the numbers are eq to: {n1}\"
+                                      print "the numbers are eq to: {n1}"
                                       break
                                   }
                               } elif n1 -le 23 {
-                                  print \"wow\" // yhan bhi comment add kr sakte hain
+                                  print "wow" # yhan bhi comment add kr sakte hain
                               } else {
                                   for i in 0; 10 {
-                                      print \"the numbers are not eq\"
+                                      awk '\{anything\}'
+                                      print "the numbers are not eq"
                                   }
+                              }
+                              if let a = ${ 84 - (44 -43) * 34 } {
+                                  print "this was easy answer is: {a}"
                               }
                               theme 4
                               runitctl --help
                               runitctl enable sshd
-                              theme 3 && waybar; hyprpaper& ");
+                              theme 3 && waybar; hyprpaper& "#);
     let mut lexer = Lexer::new(&file);
     let mut tokens = lexer.tokenize();
     println!("{:?}\n", tokens);

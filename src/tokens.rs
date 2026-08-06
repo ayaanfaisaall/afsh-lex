@@ -1,16 +1,16 @@
 //
 // note: () or parenthesis are intentionally not 
 // allowed in my shell and its language and hence
-// (), don't even have a Token :)
+// (), don't even have a Token ( except #{ } ) :)
 //
 #[derive(Debug, Clone, PartialEq)]
 pub enum Token {
     // general
     Word(String),
     Str(Vec<StrIntr>),
-    // slash, comments
-    Slash,
-    Comment,
+    // symbols
+    NewLine,
+    Eval,
     // punctuation
     SemiCln,
     Colon,
@@ -20,6 +20,7 @@ pub enum Token {
     Assign,
     AndAnd,
     OrOr,
+    EqEq,
     Bang,
     // shell operators
     Pipe,
@@ -27,10 +28,10 @@ pub enum Token {
     RdrctOut,
     Append,
     // brackets
-    RBrc,
     LBrc,
-    RSqr,
+    RBrc,
     LSqr,
+    RSqr,
     // lang keywords
     Let,
     Print,
@@ -40,12 +41,23 @@ pub enum Token {
     For,
     While,
     Break,
+    True,
+    False,
     // equality operators
     EqualTo, 
     LessEqual, 
     LessThan,
     GreaterEqual,
     GreaterThan,
+    //math operators
+    Plus,
+    Minus,
+    Multiply,
+    Divide,
+    Modulo,
+    Power,
+    LPths,
+    RPths,
     // end of file
     EOF,
 }
