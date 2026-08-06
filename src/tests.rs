@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
-    use crate::Lexer; 
-    use crate::tokens::{Token, StrIntr};
+    use afsh_lex::lexer::Lexer; 
+    use afsh_lex::tokens::{Token, StrIntr};
 
     #[test]
     fn test_file_paths_and_dots() {
