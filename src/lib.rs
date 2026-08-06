@@ -1,6 +1,7 @@
 pub mod tokens;
+pub mod lexer;
 
 pub use tokens::{
     Token, StrIntr
 };
-pub use Lexer;
+pub use lexer::Lexer;
