@@ -72,6 +72,20 @@ impl <'a> Lexer <'a> {
                                     lit.push(v);
                                     self.chars.next();
                                     break;
+                                } else if v == '"' {
+                                    self.chars.next();
+                                    break;
+                                //
+                                // an edge case if a user doesn't close {} then the rest of string
+                                // will become variable, not the whole line, e.g: print "my name is
+                                // {name and i am a rustacean" > file.txt, in this case it will
+                                // throw and error that name and i am a rustacean is not a variable,
+                                //
+                                // in the parser we will also check unclosed brackets and strings, 
+                                // then we will remove this from here
+                                //
+                                // we also have to add a reedline validator for multiline,
+                                //
                                 } else {
                                     var.push(v);
                                     self.chars.next();
@@ -99,19 +113,19 @@ impl <'a> Lexer <'a> {
                     self.chars.next();
                 }
                 '{' => {
-                    tokens.push(Token::RBrc);
-                    self.chars.next();
-                }
-                '}' => {
                     tokens.push(Token::LBrc);
                     self.chars.next();
                 }
+                '}' => {
+                    tokens.push(Token::RBrc);
+                    self.chars.next();
+                }
                 '[' => {
-                    tokens.push(Token::RSqr);
+                    tokens.push(Token::LSqr);
                     self.chars.next();
                 }
                 ']' => {
-                    tokens.push(Token::LSqr);
+                    tokens.push(Token::RSqr);
                     self.chars.next();
                 }
                 '=' => {
@@ -120,6 +134,10 @@ impl <'a> Lexer <'a> {
                 }
                 ':' => {
                     tokens.push(Token::Colon);
+                    self.chars.next();
+                }
+                '<' => {
+                    tokens.push(Token::RdrctIn);
                     self.chars.next();
                 }
                 '&' => {
@@ -151,7 +169,7 @@ impl <'a> Lexer <'a> {
                             tokens.push(Token::Append);
                             self.chars.next();
                         } else {
-                            tokens.push(Token::Redirect);
+                            tokens.push(Token::RdrctOut);
                         }
                     }
                 }

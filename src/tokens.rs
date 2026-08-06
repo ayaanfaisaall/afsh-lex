@@ -23,7 +23,8 @@ pub enum Token {
     Bang,
     // shell operators
     Pipe,
-    Redirect,
+    RdrctIn,
+    RdrctOut,
     Append,
     // brackets
     RBrc,
