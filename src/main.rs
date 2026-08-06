@@ -308,6 +308,12 @@ impl <'a> Lexer <'a> {
                         "while" => {
                             tokens.push(Token::While);
                         }
+                        "in" => {
+                            tokens.push(Token::In);
+                        }
+                        "to" => {
+                            tokens.push(Token::To);
+                        }
                         "break" => {
                             tokens.push(Token::Break);
                         }                        
@@ -364,7 +370,7 @@ fn main() {
                               } elif n1 -le 23 {
                                   print "wow" # yhan bhi comment add kr sakte hain
                               } else {
-                                  for i in 0; 10 {
+                                  for i in 0 to 10 {
                                       awk '\{anything\}'
                                       print "the numbers are not eq"
                                   }

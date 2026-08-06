@@ -40,6 +40,8 @@ pub enum Token {
     Else,
     For,
     While,
+    In,
+    To,
     Break,
     True,
     False,
