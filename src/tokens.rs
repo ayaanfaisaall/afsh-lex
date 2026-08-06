@@ -1,7 +1,7 @@
 //
 // note: () or parenthesis are intentionally not 
 // allowed in my shell and its language and hence
-// (), don't even have a Token ( except #{ } ) :)
+// (), don't even have a Token ( except ${ } ) :)
 //
 #[derive(Debug, Clone, PartialEq)]
 pub enum Token {
