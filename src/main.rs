@@ -14,6 +14,8 @@
 //  written by:
 // -ayaanfaisaall :) 
 //
+#[cfg(test)]
+mod tests;
 mod tokens;
 use std:: {
     iter::Peekable,
