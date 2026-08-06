@@ -26,12 +26,12 @@ use tokens::{
     StrIntr,
 };
 
-struct Lexer <'a> {
+pub struct Lexer <'a> {
     chars: Peekable<Chars <'a>>,
 }
 
 impl <'a> Lexer <'a> {
-    fn new (input: &'a str) -> Self {
+    pub fn new (input: &'a str) -> Self {
         Lexer {
             chars: input.chars().peekable(), 
         }
@@ -44,7 +44,7 @@ impl <'a> Lexer <'a> {
     // a word, a lang keyword, a string, some punctuation,
     // brackets or an operator :)
     //
-    fn tokenize (&mut self) -> Vec<Token> {
+    pub fn tokenize (&mut self) -> Vec<Token> {
         let mut tokens = Vec::new();
         while let Some(&c) = self.chars.peek() {
             match c {

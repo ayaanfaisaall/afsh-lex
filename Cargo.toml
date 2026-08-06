@@ -1,6 +1,14 @@
 [package]
-name = "tokenizer"
+name = "afsh-lex"
 version = "0.1.0"
 edition = "2024"
+authors = ["ayaan faisal <info@ayaanfaisaal.cc>"]
+description = "a custom shell-first lexer, for a shell afsh"
+license = "MIT"
+repository = "https://github.com/ayaanfaisaall/afsh-lex"
+
+[lib]
+name = "afsh_lex"
+path = "src/lib.rs"
 
 [dependencies]
