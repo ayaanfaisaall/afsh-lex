@@ -4,6 +4,20 @@ mod tests {
     use afsh_lex::tokens::{Token, StrIntr};
 
     #[test]
+    fn test_colon_and_urls() {
+        let input = "ping https://www.ayaanfaisaall.cc";
+        let tokens = Lexer::new(&input).tokenize();
+        assert_eq!(
+            tokens,
+            vec![
+            Token::Word(String::from("ping")),
+            Token::Word(String::from("https://www.ayaanfaisaall.cc")),
+            Token::EOF,
+            ]
+        );
+    }
+
+    #[test]
     fn test_file_paths_and_dots() {
         let input = "git add . && cat ~/Downloads/abc/dc.jpg";
         let mut lexer = Lexer::new(input);
