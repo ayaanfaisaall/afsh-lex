@@ -115,10 +115,6 @@ impl <'a> Lexer <'a> {
                     tokens.push(Token::RSqr);
                     self.chars.next();
                 }
-                ':' => {
-                    tokens.push(Token::Colon);
-                    self.chars.next();
-                }
                 '<' => {
                     tokens.push(Token::RdrctIn);
                     self.chars.next();

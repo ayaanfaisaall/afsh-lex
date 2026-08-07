@@ -13,7 +13,6 @@ pub enum Token {
     Eval,
     // punctuation
     SemiCln,
-    Colon,
     Comma,
     And,
     // logical operators
